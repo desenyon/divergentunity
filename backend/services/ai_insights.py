@@ -3,16 +3,26 @@ import os
 import json
 from typing import Dict, List, Any
 from dotenv import load_dotenv
+import asyncio
 
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 
+# Configure timeout for all requests
+import socket
+socket.setdefaulttimeout(30)
+
 
 def get_gemini_model():
-    """Get Gemini 2.5 Flash Lite model"""
-    return genai.GenerativeModel('gemini-2.5-flash-lite')
+    """Get Gemini 2.5 Flash Lite model with timeout configuration"""
+    return genai.GenerativeModel(
+        'gemini-2.5-flash-lite',
+        generation_config=genai.types.GenerationConfig(
+            temperature=0.7,
+        )
+    )
 
 
 async def generate_bias_analysis(utterances: List[Dict[str, str]], topic: str) -> Dict[str, Any]:
@@ -366,76 +376,37 @@ async def judge_message(message: str, speaker: str, topic: str, conversation_his
         
         recent_context = "\n".join([f"{msg['speaker']}: {msg['text']}" for msg in conversation_history[-5:]])
         
-        prompt = f"""You are an AI Judge monitoring a debate about "{topic}". Analyze this message for issues:
+        prompt = f"""Analyze this debate message for issues. Be VERY strict.
 
+TOPIC: {topic}
 SPEAKER: {speaker}
 MESSAGE: "{message}"
 
 RECENT CONTEXT:
 {recent_context}
 
-Analyze for:
+Check for:
+1. BIAS: strawman, ad hominem, false dichotomy, overgeneralization
+2. FACTS: unsubstantiated claims, incorrect statistics
+3. CIVILITY: personal attacks, dismissive language, insults
 
-1. **BIAS DETECTION** - Is this message showing:
-   - Emotional reasoning without logic?
-   - Strawman arguments (misrepresenting the other side)?
-   - Ad hominem attacks (attacking person, not ideas)?
-   - False dichotomies (only presenting 2 options when more exist)?
-   - Confirmation bias (only seeing evidence that supports their view)?
-   
-2. **FACTUAL ACCURACY** - Check for:
-   - Specific claims that may be incorrect or misleading
-   - Overgeneralizations ("Everyone knows...", "Nobody would...")
-   - Unsubstantiated statistics or facts
-   - Logical fallacies
-   
-3. **CIVILITY CHECK** - Flag if message contains:
-   - Personal attacks or insults
-   - Dismissive language
-   - Condescending tone
-   - Inflammatory rhetoric
-   - Disrespectful framing
-
-For EACH issue found, provide:
-- Exact quote showing the problem
-- Why it's problematic
-- How to rephrase constructively
-
-Return ONLY valid JSON (no markdown):
+Return ONLY this exact JSON format (no markdown, no extra text):
 {{
-  "has_issues": true/false,
-  "severity": "none|low|medium|high",
-  "bias_issues": [
-    {{
-      "type": "Specific bias name",
-      "quote": "exact problematic phrase",
-      "explanation": "why this is biased",
-      "better_approach": "how to say it fairly"
-    }}
-  ],
-  "factual_issues": [
-    {{
-      "claim": "the questionable claim",
-      "problem": "what's wrong with it",
-      "correction": "more accurate way to frame it"
-    }}
-  ],
-  "civility_issues": [
-    {{
-      "quote": "uncivil phrase",
-      "problem": "why it's uncivil",
-      "reframe": "respectful alternative"
-    }}
-  ],
-  "overall_assessment": "brief summary of message quality"
+  "has_issues": true,
+  "severity": "high",
+  "bias_issues": [{{"type": "Ad Hominem", "quote": "exact quote", "explanation": "why it's biased", "better_approach": "better way"}}],
+  "factual_issues": [{{"claim": "the claim", "problem": "what's wrong", "correction": "correction"}}],
+  "civility_issues": [{{"quote": "uncivil phrase", "problem": "why uncivil", "reframe": "better version"}}],
+  "overall_assessment": "summary"
 }}
 
-Be strict but fair. If the message is fine, return empty arrays and severity: "none"."""
+If NO issues: {{"has_issues": false, "severity": "none", "bias_issues": [], "factual_issues": [], "civility_issues": [], "overall_assessment": "Message is respectful and fair"}}
+"""
 
         response = model.generate_content(prompt)
         text = response.text.strip()
         
-        # Clean JSON
+        # Clean JSON markers
         if text.startswith("```json"):
             text = text[7:]
         if text.startswith("```"):
@@ -444,15 +415,18 @@ Be strict but fair. If the message is fine, return empty arrays and severity: "n
             text = text[:-3]
         text = text.strip()
         
-        return json.loads(text)
+        result = json.loads(text)
+        print(f"✓ Judge analyzed message from {speaker}: {result.get('severity', 'none')}")
+        return result
         
     except Exception as e:
-        print(f"Error in judge_message: {e}")
+        print(f"✗ Judge error: {str(e)[:200]}")
+        # Return empty analysis on error
         return {
             "has_issues": False,
             "severity": "none",
             "bias_issues": [],
             "factual_issues": [],
             "civility_issues": [],
-            "overall_assessment": "Analysis unavailable"
+            "overall_assessment": f"Analysis unavailable: {str(e)[:50]}"
         }

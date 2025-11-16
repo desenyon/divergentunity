@@ -242,8 +242,8 @@ async def generate_compromise_endpoint(
         session
     )
     
-    # Return only the compromise text
-    return {"compromise_text": compromise.get("compromise_text", "")}
+    # Return only the compromise text (compromise is a Pydantic model)
+    return {"compromise_text": compromise.compromise_text if hasattr(compromise, 'compromise_text') else str(compromise)}
 
 
 @app.post("/api/conversation/{conversation_id}/summary", response_model=SummaryResponse)

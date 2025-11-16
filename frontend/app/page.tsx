@@ -96,14 +96,14 @@ export default function HomePage() {
       <header className="fixed top-0 w-full z-50 border-b border-white/10 backdrop-blur-xl bg-black/50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative">
-                <Sparkles className="w-8 h-8 text-white animate-breathe" />
-                <div className="absolute inset-0 bg-white/20 blur-xl rounded-full animate-pulse"></div>
+            <Link href="/" className="flex items-center gap-4">
+              <div className="relative group">
+                <img src="/logo.png" alt="DivergentUnity" className="w-10 h-10 animate-breathe" />
+                <div className="absolute inset-0 bg-emerald-400/30 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <h1 className="text-2xl font-black tracking-tight">
-                <span className="text-white">Divergent</span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Unity</span>
+              <h1 className="text-3xl font-black tracking-[0.15em]">
+                <span className="text-white hover:text-emerald-400 transition-colors duration-300 inline-block">DIVERGENT</span>
+                <span className="text-cyan-400 hover:text-white transition-colors duration-300 ml-3 inline-block">UNITY</span>
               </h1>
             </Link>
 
