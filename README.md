@@ -8,16 +8,6 @@ An innovative platform that uses Google Gemini AI to help people with opposing v
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![Next.js](https://img.shields.io/badge/next.js-14+-black.svg)
 
-## ✨ Features
-
-- 🤖 **AI-Powered Value Extraction** - Gemini 1.5 Flash identifies underlying principles
-- 🎤 **Real-Time Voice Input** - Web Speech API with visual feedback
-- 📊 **Interactive Visualizations** - Consensus maps showing value alignments
-- 📈 **Comprehensive Analytics** - Quality scoring, impact metrics, session history
-- 💡 **AI Compromise Generation** - Balanced solutions honoring both perspectives
-- 🌙 **Modern Dark UI** - Professional design with smooth animations
-- 🔄 **Real-Time Analysis** - Instant tension/empathy tracking
-
 ## 🚀 Quick Start
 
 ### 1. Get a Gemini API Key (Free)
