@@ -2,13 +2,13 @@
 
 > Bridge divides through intelligent debate analysis and AI-mediated compromise
 
-An innovative platform that uses Google Gemini AI to help people with opposing viewpoints find common ground. It analyzes debates in real-time, extracts underlying values, identifies areas of agreement, and generates balanced compromise solutions.
+An innovative platform that uses Google Gemini AI to help people with opposing viewpoints find common ground. It analyzes debates in real-time, extracts underlying values, identifies areas of agreement, and generates AI-mediated compromises.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![Next.js](https://img.shields.io/badge/next.js-14+-black.svg)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Get a Gemini API Key (Free)
 Visit [Google AI Studio](https://makersuite.google.com/app/apikey) and create an API key.
@@ -33,9 +33,9 @@ chmod +x start.sh
 
 Open **http://localhost:3000** in your browser!
 
-📖 **See [QUICKSTART.md](QUICKSTART.md) for detailed instructions**
+**See [QUICKSTART.md](QUICKSTART.md) for detailed instructions**
 
-## 🏗️ Architecture
+## Architecture
 
 ### Tech Stack
 
@@ -73,7 +73,7 @@ Conversation (1) → (N) Utterance
 4. **Consensus Map** - Generate visualization data
 5. **Compromise Generator** - Synthesize balanced solutions
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Conversations
 - `POST /api/conversation` - Create new conversation
@@ -92,7 +92,7 @@ Conversation (1) → (N) Utterance
 
 View interactive docs at **http://localhost:8000/docs**
 
-## 🎯 How It Works
+## How It Works
 
 1. **Input**: Users provide a topic and opposing perspectives (2-8 participants)
 2. **Analysis**: Gemini AI extracts underlying values from each statement
@@ -113,7 +113,7 @@ The system detects 8 types of values:
 - **Autonomy** - Self-determination, choice
 - **Responsibility** - Duty, accountability
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 divergentunity/
@@ -144,7 +144,7 @@ divergentunity/
     └── package.json
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Test backend API
@@ -154,7 +154,7 @@ divergentunity/
 curl http://localhost:8000
 ```
 
-## 🛠️ Development
+## Development
 
 See [DEVELOPMENT.md](DEVELOPMENT.md) for:
 - Detailed setup instructions
@@ -163,14 +163,14 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for:
 - Customization guide
 - Troubleshooting tips
 
-## 🎨 Example Use Cases
+## Example Use Cases
 
 - **Policy Debates**: Climate change, healthcare, education
 - **Team Decisions**: Remote work policies, project priorities
 - **Community Issues**: Local development, resource allocation
 - **Personal Conflicts**: Family decisions, relationship issues
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please:
 1. Fork the repository
@@ -178,24 +178,24 @@ Contributions welcome! Please:
 3. Make your changes
 4. Submit a pull request
 
-## 📄 License
+## License
 
 MIT License - see LICENSE file
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Google Gemini AI for advanced language understanding
 - FastAPI for excellent Python web framework
 - Next.js team for the amazing React framework
 - Open source community
 
-## 📞 Support
+## Support
 
-- 📖 Read [QUICKSTART.md](QUICKSTART.md) for setup help
-- 🔧 Check [DEVELOPMENT.md](DEVELOPMENT.md) for technical details
-- 🐛 Report issues on GitHub
-- 💬 Join discussions in Issues
+- Read [QUICKSTART.md](QUICKSTART.md) for setup help
+- Check [DEVELOPMENT.md](DEVELOPMENT.md) for technical details
+- Report issues on GitHub
+- Join discussions in Issues
 
 ---
 
-**Built with ❤️ for better conversations and understanding**
+**Built with love for better conversations and understanding**
