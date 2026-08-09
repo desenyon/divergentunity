@@ -199,3 +199,79 @@ MIT License - see LICENSE file
 ---
 
 **Built with love for better conversations and understanding**
+
+<!-- architecture-atlas-v5:start -->
+## Architecture Atlas v5
+
+These editable Mermaid diagrams mirror the [Notion architecture dossier](https://app.notion.com/p/3b467342e8c18163b5aaf76dc4a923d7?pvs=204).
+
+### 1. Consensus anatomy
+
+```mermaid
+flowchart LR
+  UI["Participants + debate UI"] --> API["Discussion/session API"]
+  API --> TEXT[("Verbatim claims, reasons and replies")]
+  TEXT --> SEG["Claim segmenter"] --> VALUE["Value-ontology mapper"] --> SPAN["Evidence-span linker"]
+  SPAN --> GRAPH[("Versioned claim/value graph")]
+  GRAPH --> EDGE["Support/conflict edge classifier"]
+  EDGE --> ALIGN["Shared-value and alignment detector"]
+  EDGE --> CONFLICT["Irreducible-conflict detector"]
+  ALIGN --> BRIDGE["Bridge-claim finder"]
+  BRIDGE --> COMP["Candidate compromise generator"]
+  CONFLICT --> COMP
+  COMP --> FAIR["Fairness, stakeholder and uncertainty annotator"]
+  FAIR --> REVIEW["Human correction workflow"]
+  REVIEW --> GRAPH
+  FAIR --> MAP["Interactive consensus map + proposal comparison"]
+```
+
+### 2. Evidence-to-proposal wiring
+
+```mermaid
+flowchart TB
+  CLAIM["Original participant statement"] --> EXTRACT["Extract candidate claims and values"] --> CITE["Attach exact source spans and confidence"]
+  CITE --> NODES["Create claim/value nodes"] --> REL["Classify support, conflict and dependency edges"]
+  REL --> COMMON["Find shared values"]
+  REL --> IRRED["Preserve conflicts with no fair bridge"]
+  COMMON --> BRIDGE["Generate bridge claims"] --> PROPOSE["Generate candidate compromises"]
+  IRRED --> PROPOSE
+  PROPOSE --> IMPACT["Expose affected stakeholders, winners, losers and trade-offs"] --> HUMAN{"Human review"}
+  HUMAN -->|accept| PUBLISH["Publish versioned map/proposal"]
+  HUMAN -->|correct extraction or edge| FIX["Store correction without rewriting original text"] --> NODES
+  HUMAN -->|reject compromise| REVISE["Generate or manually compose alternative"] --> IMPACT
+```
+
+### 3. Runtime narrative
+
+```mermaid
+sequenceDiagram
+  actor P as Participants
+  participant D as Discussion Service
+  participant E as Claim/Value Extraction
+  participant G as Relationship Graph
+  participant C as Consensus Engine
+  participant V as Visualization / Review
+  P->>D: submit claims, reasons and replies
+  D->>E: segment arguments and extract values with evidence spans
+  E->>G: nodes plus support/conflict edges and uncertainty
+  G->>C: shared values, bridge candidates and irreducible conflicts
+  C->>C: generate proposals with stakeholder trade-offs
+  C-->>D: compromises, uncertainty and affected groups
+  D->>V: persist graph version and render interactive map
+  P->>V: accept, reject or correct values and edges
+  V->>G: human corrections override model inference
+```
+
+### 4. Reliability model
+
+```mermaid
+stateDiagram-v2
+  [*] --> DISCUSSION_OPEN
+  DISCUSSION_OPEN --> EXTRACTING --> GRAPHING --> ALIGNMENT --> PROPOSING --> HUMAN_REVIEW
+  HUMAN_REVIEW --> PUBLISHED: accepted with visible uncertainty
+  HUMAN_REVIEW --> REVISED: correction or rejection
+  REVISED --> GRAPHING: extraction/edge correction
+  REVISED --> PROPOSING: alternative proposal
+```
+
+<!-- architecture-atlas-v5:end -->
